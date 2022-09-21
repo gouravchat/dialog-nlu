@@ -3,7 +3,7 @@
 @author: mwahdan
 """
 
-from dialognlu import AutoNLU
+from dialognlu import TransformerNLU, AutoNLU
 from flask import Flask, jsonify, request
 import argparse
 
@@ -13,7 +13,8 @@ app = Flask(__name__)
 
 def initialize(load_folder_path):
     global nlu_model
-    nlu_model = AutoNLU.load(load_folder_path)    
+    save_path = "saved_models/joint_distilbert_model"
+    nlu_model = AutoNLU.load(save_path)
 
 @app.route('/', methods=['GET', 'POST'])
 def hello():
@@ -29,7 +30,7 @@ def predict():
 
 
 if __name__ == '__main__':    
-    # read command-line parameters
+    #read command-line parameters
     parser = argparse.ArgumentParser('Running JointNLU model basic service')
     parser.add_argument('--model', '-m', help = 'Path to joint NLU model', type=str, required=True)
     parser.add_argument('--port', '-p', help = 'port of the service', type=int, required=False, default=5000)
